@@ -1,6 +1,6 @@
 import { createSignal, createEffect, createMemo } from 'solid-js';
 import type { Viewport, OHLCData } from '../core/types';
-import { fitToData } from '../utils/viewport';
+import { fitToData, validateViewport } from '../utils/viewport';
 
 export interface UseViewportOptions {
   data: () => OHLCData[];
@@ -16,10 +16,16 @@ export function useViewport(options: UseViewportOptions) {
   createEffect(() => {
     const data = options.data();
     if (options.initialTimeRange && options.initialPriceRange) {
-      setInternalViewport({
-        timeRange: options.initialTimeRange,
-        priceRange: options.initialPriceRange,
-      });
+      try {
+        const validated = validateViewport({
+          timeRange: options.initialTimeRange,
+          priceRange: options.initialPriceRange,
+        });
+        setInternalViewport(validated);
+      } catch (error) {
+        console.warn('useViewport: Invalid initial viewport, using fitToData instead', error);
+        setInternalViewport(fitToData(data));
+      }
     } else {
       setInternalViewport(fitToData(data));
     }
@@ -27,13 +33,24 @@ export function useViewport(options: UseViewportOptions) {
 
   // Current viewport (internal or computed from data)
   const viewport = createMemo<Viewport>(() => {
-    return internalViewport() ?? fitToData(options.data());
+    const vp = internalViewport() ?? fitToData(options.data());
+    try {
+      return validateViewport(vp);
+    } catch (error) {
+      console.warn('useViewport: Invalid viewport detected, using fitToData instead', error);
+      return fitToData(options.data());
+    }
   });
 
   // Update viewport and notify parent
   const updateViewport = (newViewport: Viewport) => {
-    setInternalViewport(newViewport);
-    options.onViewportChange?.(newViewport);
+    try {
+      const validated = validateViewport(newViewport);
+      setInternalViewport(validated);
+      options.onViewportChange?.(validated);
+    } catch (error) {
+      console.warn('useViewport: Invalid viewport update ignored', error);
+    }
   };
 
   return {
