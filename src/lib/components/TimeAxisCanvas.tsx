@@ -20,6 +20,12 @@ export function TimeAxisCanvas(props: TimeAxisCanvasProps) {
   const draw = () => {
     if (!ctx || !canvas) return;
 
+    // Validate dimensions
+    if (props.width <= 0 || axisHeight() <= 0) {
+      console.warn('TimeAxisCanvas: Invalid dimensions', { width: props.width, height: axisHeight() });
+      return;
+    }
+
     const dpr = window.devicePixelRatio || 1;
     const width = props.width;
     const height = axisHeight();
@@ -43,6 +49,10 @@ export function TimeAxisCanvas(props: TimeAxisCanvasProps) {
   onMount(() => {
     if (canvas) {
       ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('TimeAxisCanvas: Failed to get 2D rendering context. Canvas may not be supported in this browser.');
+        return;
+      }
       draw();
     }
   });

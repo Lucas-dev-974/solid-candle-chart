@@ -1,6 +1,7 @@
 import { createMemo, createSignal } from 'solid-js';
 import type { OHLCChartProps, ChartTheme } from '../core/types';
 import { aggregateOHLC, type TimeframeMinutes } from '../utils/timeframe';
+import { validateOHLCData, sortOHLCDataByTime } from '../utils/validation';
 import { useViewport } from '../hooks/useViewport';
 import { useChartInteractions } from '../hooks/useChartInteractions';
 import { useTheme } from '../hooks/useTheme';
@@ -20,10 +21,16 @@ export function OHLCChart(props: OHLCChartProps) {
   const mainWidth = () => width() - PRICE_AXIS_WIDTH;
   const mainHeight = () => height() - TIME_AXIS_HEIGHT;
 
+  // Validate and prepare data
+  const validatedData = createMemo(() => {
+    const valid = validateOHLCData(props.data);
+    return sortOHLCDataByTime(valid);
+  });
+
   // Aggregate data based on timeframe
   const aggregatedData = createMemo(() => {
     const tf = (props.timeframe ?? 1) as TimeframeMinutes;
-    return aggregateOHLC(props.data, tf);
+    return aggregateOHLC(validatedData(), tf);
   });
 
   // Theme management

@@ -17,3 +17,4 @@ export type { Scale } from './core/scale';
 export { fitToData } from './utils/viewport';
 export { aggregateOHLC, TIMEFRAMES } from './utils/timeframe';
 export type { Timeframe, TimeframeMinutes } from './utils/timeframe';
+export { validateOHLCData, isDataSorted, sortOHLCDataByTime } from './utils/validation';

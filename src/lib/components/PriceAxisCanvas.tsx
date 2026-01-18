@@ -19,6 +19,12 @@ export function PriceAxisCanvas(props: PriceAxisCanvasProps) {
   const draw = () => {
     if (!ctx || !canvas) return;
 
+    // Validate dimensions
+    if (axisWidth() <= 0 || props.height <= 0) {
+      console.warn('PriceAxisCanvas: Invalid dimensions', { width: axisWidth(), height: props.height });
+      return;
+    }
+
     const dpr = window.devicePixelRatio || 1;
     const width = axisWidth();
     const height = props.height;
@@ -42,6 +48,10 @@ export function PriceAxisCanvas(props: PriceAxisCanvasProps) {
   onMount(() => {
     if (canvas) {
       ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('PriceAxisCanvas: Failed to get 2D rendering context. Canvas may not be supported in this browser.');
+        return;
+      }
       draw();
     }
   });

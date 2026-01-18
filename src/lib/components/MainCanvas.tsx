@@ -20,6 +20,12 @@ export function MainCanvas(props: MainCanvasProps) {
   const draw = () => {
     if (!ctx || !canvas) return;
 
+    // Validate dimensions
+    if (props.width <= 0 || props.height <= 0) {
+      console.warn('MainCanvas: Invalid dimensions', { width: props.width, height: props.height });
+      return;
+    }
+
     const dpr = window.devicePixelRatio || 1;
     const width = props.width;
     const height = props.height;
@@ -47,6 +53,10 @@ export function MainCanvas(props: MainCanvasProps) {
   onMount(() => {
     if (canvas) {
       ctx = canvas.getContext('2d');
+      if (!ctx) {
+        console.error('MainCanvas: Failed to get 2D rendering context. Canvas may not be supported in this browser.');
+        return;
+      }
       draw();
     }
   });
