@@ -31,50 +31,40 @@ export function CandleInfoBox(props: CandleInfoBoxProps) {
 
         return (
           <div
+            class="absolute top-[10px] left-[10px] rounded border min-w-[200px] px-3 py-2 font-mono text-xs z-[1000] pointer-events-none shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
             style={{
-              position: 'absolute',
-              top: '10px',
-              left: '10px',
               background: props.theme.background,
-              border: `1px solid ${props.theme.axisLine}`,
-              'border-radius': '4px',
-              padding: '8px 12px',
-              'font-family': 'monospace',
-              'font-size': '12px',
+              "border-color": props.theme.axisLine,
               color: props.theme.axisText,
-              'z-index': 1000,
-              'min-width': '200px',
-              'box-shadow': '0 2px 8px rgba(0, 0, 0, 0.3)',
-              'pointer-events': 'none',
             }}
           >
-            <div style={{ 'margin-bottom': '6px', 'font-weight': 'bold', 'border-bottom': `1px solid ${props.theme.axisLine}`, 'padding-bottom': '4px' }}>
+            <div class="mb-1.5 font-bold pb-1 border-b" style={{ "border-color": props.theme.axisLine }}>
               {formatTime(candle().time)}
             </div>
-            
-            <div style={{ display: 'flex', 'justify-content': 'space-between', 'margin-bottom': '4px' }}>
+
+            <div class="flex justify-between mb-1">
               <span style={{ color: props.theme.axisText }}>O:</span>
               <span style={{ color: props.theme.axisText }}>{candle().open.toFixed(pricePrecision)}</span>
             </div>
-            
-            <div style={{ display: 'flex', 'justify-content': 'space-between', 'margin-bottom': '4px' }}>
+
+            <div class="flex justify-between mb-1">
               <span style={{ color: props.theme.axisText }}>H:</span>
               <span style={{ color: props.theme.bullCandle }}>{candle().high.toFixed(pricePrecision)}</span>
             </div>
-            
-            <div style={{ display: 'flex', 'justify-content': 'space-between', 'margin-bottom': '4px' }}>
+
+            <div class="flex justify-between mb-1">
               <span style={{ color: props.theme.axisText }}>L:</span>
               <span style={{ color: props.theme.bearCandle }}>{candle().low.toFixed(pricePrecision)}</span>
             </div>
-            
-            <div style={{ display: 'flex', 'justify-content': 'space-between', 'margin-bottom': '4px' }}>
+
+            <div class="flex justify-between mb-1">
               <span style={{ color: props.theme.axisText }}>C:</span>
               <span style={{ color: isBull ? props.theme.bullCandle : props.theme.bearCandle }}>
                 {candle().close.toFixed(pricePrecision)}
               </span>
             </div>
-            
-            <div style={{ display: 'flex', 'justify-content': 'space-between', 'margin-top': '6px', 'padding-top': '4px', 'border-top': `1px solid ${props.theme.axisLine}` }}>
+
+            <div class="flex justify-between mt-1.5 pt-1 border-t" style={{ "border-color": props.theme.axisLine }}>
               <span style={{ color: props.theme.axisText }}>Change:</span>
               <span style={{ color: isBull ? props.theme.bullCandle : props.theme.bearCandle }}>
                 {change >= 0 ? '+' : ''}{change.toFixed(pricePrecision)} ({changePercent >= 0 ? '+' : ''}{changePercent.toFixed(2)}%)

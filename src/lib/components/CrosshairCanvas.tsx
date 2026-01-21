@@ -91,13 +91,7 @@ export function CrosshairCanvas(props: CrosshairCanvasProps) {
   return (
     <canvas
       ref={canvas}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        'pointer-events': 'none',
-        'z-index': 10,
-      }}
+      class="absolute top-0 left-0 pointer-events-none z-[10]"
     />
   );
 }

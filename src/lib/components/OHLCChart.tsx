@@ -58,17 +58,17 @@ export function OHLCChart(props: OHLCChartProps) {
 
   return (
     <div
-      class="grid"
+      class="grid relative"
       style={{
-        'grid-template-columns': `${mainWidth()}px ${PRICE_AXIS_WIDTH}px`,
-        'grid-template-rows': `${mainHeight()}px ${TIME_AXIS_HEIGHT}px`,
+        "grid-template-columns": `${mainWidth()}px ${PRICE_AXIS_WIDTH}px`,
+        "grid-template-rows": `${mainHeight()}px ${TIME_AXIS_HEIGHT}px`,
         width: `${width()}px`,
         height: `${height()}px`,
       }}
     >
       <div
+        class="relative"
         classList={{ 'cursor-crosshair': !isPanning(), 'cursor-grabbing': isPanning() }}
-        style={{ position: 'relative' }}
         onWheel={interactions.handleWheel}
         onMouseDown={interactions.handleMouseDown}
         onMouseMove={interactions.handleMouseMove}
