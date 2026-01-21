@@ -4,10 +4,12 @@
   "description": "A high-performance OHLC candlestick chart library built with SolidJS",
   "type": "module",
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
@@ -18,8 +20,10 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:lib && npm run build:types",
     "build:lib": "vite build",
+    "build:types": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
     "serve": "vite preview"
   },
   "keywords": [

@@ -1,0 +1,44 @@
+# Source files (only dist and src/lib are needed)
+src/App.tsx
+src/index.tsx
+src/index.css
+
+# Development files
+.vscode/
+.idea/
+*.log
+*.swp
+*.swo
+*~
+
+# Build artifacts (will be regenerated)
+dist/
+
+# Dependencies
+node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (optional - you can include README.md if you want)
+ANALYSE_PROJET.md
+DEVELOPMENT_PLAN.md
+
+# Environment
+.env
+.env*.local
+
+# Test files (if you add tests later)
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Config files that aren't needed in package
+vite.config.ts
+tsconfig.json
+tsconfig.build.json
+
+# Demo/example files
+index.html
