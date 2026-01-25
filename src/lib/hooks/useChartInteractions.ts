@@ -162,9 +162,9 @@ export function useChartInteractions(options: UseChartInteractionsOptions) {
   };
 
   const handleMouseLeave = (e: MouseEvent) => {
-    // Clear mouse position and hovered candle when leaving
+    // Clear mouse position when leaving, but keep the last hovered candle
     setMousePosition(null);
-    setHoveredCandle(null);
+    // Don't clear hoveredCandle - keep it visible
     
     if (isPanning()) {
       setIsPanning(false);

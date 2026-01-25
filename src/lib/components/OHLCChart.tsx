@@ -56,6 +56,33 @@ export function OHLCChart(props: OHLCChartProps) {
     onPanningChange: setIsPanning,
   });
 
+  // Get the last visible candle as fallback when no candle is hovered
+  const lastVisibleCandle = createMemo(() => {
+    const data = aggregatedData();
+    const vp = viewport();
+    if (data.length === 0) return null;
+    
+    const [timeMin, timeMax] = vp.timeRange;
+    // Find the last candle within the viewport
+    for (let i = data.length - 1; i >= 0; i--) {
+      if (data[i].time >= timeMin && data[i].time <= timeMax) {
+        return data[i];
+      }
+    }
+    // If no candle in viewport, return the last candle before timeMax
+    for (let i = data.length - 1; i >= 0; i--) {
+      if (data[i].time <= timeMax) {
+        return data[i];
+      }
+    }
+    return data[data.length - 1];
+  });
+
+  // Use hovered candle if available, otherwise use last visible candle
+  const displayedCandle = createMemo(() => {
+    return interactions.hoveredCandle() ?? lastVisibleCandle();
+  });
+
   return (
     <div
       class="grid relative"
@@ -93,7 +120,7 @@ export function OHLCChart(props: OHLCChartProps) {
           visible={!isPanning() && interactions.mousePosition() !== null}
         />
         <CandleInfoBox
-          candle={interactions.hoveredCandle()}
+          candle={displayedCandle()}
           theme={theme()}
           timeframe={props.timeframe ?? 1}
         />
